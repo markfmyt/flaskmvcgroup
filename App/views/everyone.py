@@ -28,3 +28,10 @@ def signup_user_api():
 @everyone_views.route('/api/jobs', methods=['GET'])
 def list_jobs_api():
     return get_all_jobs()
+
+@everyone_views.route('/api/users/logout', methods=['GET'])
+def logout_action():
+    response = redirect(request.referrer) 
+    flash("Logged Out!")
+    unset_jwt_cookies(response)
+    return response
