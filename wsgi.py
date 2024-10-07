@@ -47,7 +47,8 @@ def login_user_api():
 @app.route('/api/users', methods=['GET'])
 @jwt_required()
 def list_users_api():
-    return jsonify(get_all_users()), 200
+    admin_id = get_jwt_identity()
+    return get_all_users(admin_id)
 
 # Job Postings
 @app.route('/api/jobs', methods=['GET'])

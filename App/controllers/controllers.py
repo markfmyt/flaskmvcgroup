@@ -100,10 +100,18 @@ def apply_to_job(job_id, job_seeker_id, application_text):
     if not job_seeker:
         return jsonify({"error": f"Job Seeker ID {job_seeker_id} not found."}), 404
 
-    application = Application(job_id=job_id, job_seeker_id=job_seeker_id, text=application_text)
+    # Check if the job seeker has already applied for this job
+    existing_application = Application.query.filter_by(job_id=job_id, job_seeker_id=job_seeker_id).first()
+    if existing_application:
+        return jsonify({"error": f"Job Seeker {job_seeker_id} has already applied to Job {job_id}."}), 400
+
+    # Create a new application
+    application = Application(job_id=job_id, job_seeker_id=job_seeker_id, application_text=application_text)
     db.session.add(application)
     db.session.commit()
+    
     return jsonify({"message": f"Job Seeker {job_seeker_id} applied to Job {job_id}."}), 201
+
 
 def view_job_status_all(job_seeker_id):
     applications = Application.query.filter_by(job_seeker_id=job_seeker_id).all()
