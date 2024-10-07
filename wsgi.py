@@ -66,6 +66,7 @@ def apply_job_api():
     return apply_to_job(job_id, job_seeker_id, application_text)
 
 # View All Applications by Job Seeker
+
 @app.route('/api/jobs/applications', methods=['GET'])
 @jwt_required()
 def view_job_status_all_api():
