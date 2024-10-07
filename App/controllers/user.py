@@ -13,8 +13,14 @@ def get_user_by_username(username):
 def get_user(id):
     return User.query.get(id)
 
-def get_all_users():
-    return User.query.all()
+def get_all_users(admin_id):
+    # Check if the admin_id is valid
+    admin = User.query.get(admin_id)
+    if not admin or admin.role != 'admin':  # Ensure the user is an admin
+        return jsonify({"error": "Unauthorized: Only admins can view all users."}), 403
+
+    users = User.query.all()
+    return jsonify(users), 200  # Return users with a 200 OK status code
 
 def get_all_users_json():
     users = User.query.all()
