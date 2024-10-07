@@ -89,7 +89,8 @@ def get_all_jobs():
             "description": job.description,
             "employer_id": job.employer_id
         })
-    return jobs_list
+    
+    return jsonify(jobs=jobs_list), 200
 
 def apply_to_job(job_id, job_seeker_id, application_text):
     job = Job.query.get(job_id)
