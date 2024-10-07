@@ -3,8 +3,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask import jsonify
 
-
-
 # Controller function to initialize the database
 def initialize():
     db.drop_all()
@@ -145,6 +143,9 @@ def view_job_status(job_seeker_id, application_id):
 '''
 Employer Controllers
 '''
+
+def get_user_by_id(user_id):
+    return User.query.get(user_id)
 
 def create_job(category, description, employer_id):
     employer = Employer.query.get(employer_id)
