@@ -59,7 +59,7 @@ def remove_user_api(user_id):
 @admin_views.route('/api/admin/remove_job/<int:job_id>', methods=['DELETE'])
 @jwt_required()
 def remove_job_api(job_id):
-    admin_id = get_jwt_identity()  # Get the current admin's ID from the JWT
+    admin_id = get_jwt_identity() 
     admin = Admin.query.get(admin_id)  # Fetch the admin instance
 
     if not admin:
