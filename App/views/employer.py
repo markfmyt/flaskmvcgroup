@@ -48,20 +48,20 @@ def create_job_api():
         return jsonify({"error": "Category and description are required."}), 400
 
     # Create the job using the method from the Employer class
-    success, job_or_message = employer.create_job(category, description)
+    success, job = employer.create_job(category, description)
 
     if success:
         return jsonify({
             "message": "Job created successfully.",
             "job": {
-                "id": job_or_message.id,
-                "category": job_or_message.category,
-                "description": job_or_message.description,
-                "employer_id": job_or_message.employer_id
+                "job_id": job.id,
+                "category": job.category,
+                "description": job.description,
+                "employer_id": job.employer_id
             }
         }), 201
     else:
-        return jsonify({"error": job_or_message}), 400
+        return jsonify({"error": job}), 400
 
 
 @employer_views.route('/api/employer/view_applicants/<int:job_id>', methods=['GET'])
@@ -78,8 +78,7 @@ def get_applicants_for_job_api(job_id):
 
     if success:
         return jsonify({
-            "message": "Applicants retrieved successfully.",
             "applicants": result
-        }), 200
+        }), 200 
     else:
         return jsonify({"error": result}), 400

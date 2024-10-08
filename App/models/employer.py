@@ -42,7 +42,7 @@ class Employer(User):
         applicant_list = []
         for application in applications:
             applicant_list.append({
-                "application_id": application.id,
+                "application_id": application.application_id,
                 "job_seeker_id": application.job_seeker_id,
                 "status": 'Accepted' if application.is_accepted else 'Rejected' if application.is_accepted is False else 'Pending'
             })
@@ -60,4 +60,11 @@ class Employer(User):
         application.is_accepted = is_accepted
         db.session.commit()
         
-        return (True, f'Application {application_id} has been {status}.')  # Return success and the updated application object
+        if application.is_accepted is True:
+            return (True, f'Application {application_id} has been accepted.')
+        elif application.is_accepted is False:
+            return (False, f'Application {application_id} has been rejected.')
+        else:
+            return (False, f'Application {application_id} status is undetermined/pending.')
+
+                                        
