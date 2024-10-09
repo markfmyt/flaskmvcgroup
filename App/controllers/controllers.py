@@ -42,22 +42,22 @@ def create_user(username, password, email, role):
 
 def login_user(username, password):
 
-    print(f"Login attempt for user: {username}")
+    # print(f"Login attempt for user: {username}")
     user = User.query.filter_by(username=username).first()
     
     if not user:
-        print("User not found")
+        # print("User not found")
         return jsonify({"error": "User not found."}), 404
     
-    print(f"Found user: {user.username}, Hashed Password: {user.password}")
+    # print(f"Found user: {user.username}, Hashed Password: {user.password}")
     
     if check_password_hash(user.password, password):
-        print("Password matched!")
+        # print("Password matched!")
         access_token = create_access_token(identity=user.id)
-        print(f"Generated access token: {access_token}")
+        # print(f"Generated access token: {access_token}")
         return jsonify(access_token=access_token), 200
     
-    print("Password did not match")
+    # print("Password did not match")
     return jsonify({"error": "Invalid username or password."}), 401
 
 

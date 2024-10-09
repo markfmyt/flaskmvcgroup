@@ -21,7 +21,6 @@ def print_all_entities_api():
 
     return jsonify({"data": entities}), 200  # Return data
 
-
 @admin_views.route('/api/admin/drop_all', methods=['DELETE'])
 @jwt_required()
 def drop_all_api():
