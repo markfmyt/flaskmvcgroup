@@ -1,4 +1,4 @@
-# BTW This read me outdated, i will update this last when we finish the application
+# BTW This read me outdated, i will update this last when we finish the applications
 # Job Application System
 
 This is a Flask-based Job Application System that allows users to sign up, create job listings, apply for jobs, and manage applications. The system supports three types of users: Job Seekers, Employers, and Admins.
