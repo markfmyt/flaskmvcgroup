@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, jsonify, request
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from App.models import db, User, Admin, Employer, JobSeeker, Job, Application
 
 admin_views = Blueprint('admin_views', __name__, template_folder='../templates')
