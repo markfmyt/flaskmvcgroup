@@ -11,7 +11,7 @@ class User(db.Model):
 
     __mapper_args__ = {
         'polymorphic_identity': 'user',
-        'polymorphic_on': user_type
+        'polymorphic_on': 'user_type'
     }
 
     def __init__(self, username, password, email, user_type):
@@ -24,6 +24,13 @@ class User(db.Model):
         return{
             'id': self.id,
             'username': self.username
+        }
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
         }
 
     def set_password(self, password):

@@ -11,3 +11,11 @@ class Job(db.Model):
 
     # Set in such a way that if a Job gets deleted, all the applications for that job gets deleted as well
     applications = db.relationship('Application', backref='job', lazy=True, cascade="all, delete-orphan")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "category": self.category,
+            "description": self.description,
+            
+        }

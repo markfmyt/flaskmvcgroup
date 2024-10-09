@@ -236,7 +236,7 @@ def remove_user(admin_id, user_id):
         return jsonify({"error": f"User ID {user_id} not found."}), 404
 
     # Prevent admins from deleting other admins
-    if user.role == 'admin':
+    if user.user_type == 'admin':
         return jsonify({"error": "Admins cannot delete other admins."}), 403
 
     # Proceed with user deletion

@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from App.models import db, User, Admin, Employer, JobSeeker, Job, Application
+from App.views import *
 
 admin_views = Blueprint('admin_views', __name__, template_folder='../templates')
 
@@ -19,7 +20,15 @@ def print_all_entities_api():
     if not success:
         return jsonify({"message": entities}), 400  # Return error if not successful
 
-    return jsonify({"data": entities}), 200  # Return data
+    # Assuming entities is a dictionary with 'users' and 'jobs'
+    formatted_users = [user.to_dict() for user in entities.get("users", [])]
+    formatted_jobs = [job.to_dict() for job in entities.get("jobs", [])]
+
+    return jsonify({
+        "users": formatted_users,
+        "jobs": formatted_jobs
+    }), 200  # Return data
+
 
 @admin_views.route('/api/admin/drop_all', methods=['DELETE'])
 @jwt_required()

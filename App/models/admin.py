@@ -45,7 +45,7 @@ class Admin(User):
             return (False, "User not found.")  # User not found
 
         # Prevent admins from deleting other admins
-        if user.role == 'admin':
+        if user.user_type == 'admin':
             return (False, "Admins cannot delete other admins.")  # Admins cannot delete other admins
 
         # Proceed with user deletion
