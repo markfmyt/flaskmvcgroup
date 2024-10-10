@@ -4,23 +4,6 @@ from App.models import db, User, Admin, Employer, JobSeeker, Job, Application
 
 admin_views = Blueprint('admin_views', __name__, template_folder='../templates')
 
-# Admin Commands
-@admin_views.route('/api/admin/print_all', methods=['GET'])
-@jwt_required()
-def print_all_entities_api():
-    admin_id = get_jwt_identity()  # Get the current admin's ID from the JWT
-    admin = Admin.query.get(admin_id)  # Fetch the admin instance
-
-    if not admin:
-        return jsonify({"message": "Admin not found."}), 404
-
-    success, entities = admin.get_all_entities()  # Call the method to get all users and jobs
-
-    if not success:
-        return jsonify({"message": entities}), 400  # Return error if not successful
-
-    return jsonify({"data": entities}), 200  # Return data
-
 @admin_views.route('/api/admin/drop_all', methods=['DELETE'])
 @jwt_required()
 def drop_all_api():
