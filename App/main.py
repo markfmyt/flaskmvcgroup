@@ -20,20 +20,29 @@ def add_views(app):
     for view in views:
         app.register_blueprint(view)
 
-def create_app(overrides={}):
+def create_app(overrides=None):
+    if overrides is None:
+        overrides = {}
+
     app = Flask(__name__, static_url_path='/static')
-    load_config(app, overrides)
+    load_config(app, overrides)  # Load the configuration
+
     CORS(app)
     add_auth_context(app)
+    
     photos = UploadSet('photos', TEXT + DOCUMENTS + IMAGES)
     configure_uploads(app, photos)
+    
     add_views(app)
     init_db(app)
+    
     jwt = setup_jwt(app)
     setup_admin(app)
+    
     @jwt.invalid_token_loader
     @jwt.unauthorized_loader
     def custom_unauthorized_response(error):
         return render_template('401.html', error=error), 401
-    app.app_context().push()
+
+    app.app_context().push()  # Push application context to ensure app is available
     return app
