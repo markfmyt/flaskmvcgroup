@@ -44,7 +44,6 @@ class TestUser:
         token = login_user("alice", "alicepass")
         assert token is not None
 
-# Sample unit tests for Job
 class TestJob:
     def test_create_job(self):
         create_user("employer1", "employerpass", "employer1@mail.com", "employer")
