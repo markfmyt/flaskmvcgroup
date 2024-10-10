@@ -12,11 +12,11 @@ def apply_to_job(job_id, job_seeker_id, application_text):
     application = Application(job_id=job_id, job_seeker_id=job_seeker_id, application_text=application_text)
     db.session.add(application)
     try:
-        db.session.commit()  # Attempt to commit the session
-        return True  # Return True on successful commit
+        db.session.commit()
+        return True 
     except Exception as e:
-        db.session.rollback()  # Rollback in case of error
-        return None  # Return None if there was an error
+        db.session.rollback() 
+        return None  
 
 def view_job_status_all(job_seeker_id):
     application_list = Application.query.filter_by(job_seeker_id=job_seeker_id).all()
