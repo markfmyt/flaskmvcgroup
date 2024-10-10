@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from App.controllers import *
 from App.models import db, User, Admin, Employer, JobSeeker, Job, Application
+from App.controllers import employer
 
 employer_views = Blueprint('employer_views', __name__, template_folder='../templates')
 
@@ -22,12 +23,15 @@ def review_application_api(application_id):
         return jsonify({"error": "Invalid decision. Must be 'accept' or 'reject'."}), 400
 
     # Call the review_application method with the appropriate boolean value
-    success, message = employer.review_application(application_id, decision.lower() == 'accept')
+    message = review_application(application_id, decision.lower() == 'accept')
     
-    if success:
-        return jsonify({"message": message}), 200
-    else:
-        return jsonify({"error": message}), 400
+    if message and decision.lower() == 'accept':
+        return jsonify({"message": "Application has been accepted"}), 200
+    elif message and decision.lower() != 'accept':
+        return jsonify({"message": "Application has been accepted"}), 200
+
+    return jsonify({"error": "Something went wrong, application not reviewed"}), 400
+
 
 
 @employer_views.route('/api/employer/create_job', methods=['POST'])
@@ -48,20 +52,12 @@ def create_job_api():
         return jsonify({"error": "Category and description are required."}), 400
 
     # Create the job using the method from the Employer class
-    success, job = employer.create_job(category, description)
+    job = create_job(employer_id,category, description)
 
-    if success:
-        return jsonify({
-            "message": "Job created successfully.",
-            "job": {
-                "job_id": job.id,
-                "category": job.category,
-                "description": job.description,
-                "employer_id": job.employer_id
-            }
-        }), 201
+    if job:
+        return jsonify({"message": "Job created successfully.",}), 201
     else:
-        return jsonify({"error": job}), 400
+        return jsonify({"error": "Job not created, something went wrong!"}), 400
 
 
 @employer_views.route('/api/employer/view_applicants/<int:job_id>', methods=['GET'])
@@ -73,12 +69,20 @@ def get_applicants_for_job_api(job_id):
     if not employer:
         return jsonify({"error": f"Employer ID {employer_id} not found."}), 404
 
-    # Use the method from the Employer class to get applicants for the specified job
-    success, result = employer.get_applicants_for_job(job_id)
+    result = get_applicants_for_job(job_id)  # Get applicants for the specified job
 
-    if success:
-        return jsonify({
-            "applicants": result
-        }), 200 
-    else:
-        return jsonify({"error": result}), 400
+    if result is None:
+        return jsonify({"error": "No applicants found."}), 404  # Use 404 for not found
+
+    applicants_data = [
+        {
+            'application_id': application.application_id,
+            'job_id': application.job_id,
+            'job_seeker_id': application.job_seeker_id,
+            'application_text': application.application_text,
+            'is_accepted': application.is_accepted,
+        }
+        for application in result
+    ]
+    
+    return jsonify({"applicants": applicants_data}), 200
