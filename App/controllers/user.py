@@ -9,15 +9,6 @@ def get_user_by_username(username):
 def get_user(id):
     return User.query.get(id)
 
-def get_all_users(admin_id):
-    # Check if the admin_id is valid
-    admin = User.query.get(admin_id)
-    if not admin or admin.role != 'admin':  # Ensure the user is an admin
-        return jsonify({"error": "Unauthorized: Only admins can view all users."}), 403
-
-    users = User.query.all()
-    return users  # Return users with a 200 OK status code
-
 def get_all_users_json():
     users = User.query.all()
     if not users:
@@ -43,7 +34,7 @@ def create_user(username, password, email, role):
     user = None
 
     if role == 'employer':
-        user = Employer(username=username, password=hashed_password, email=email, company_name="DefaultCompany")
+        user = Employer(username=username, password=hashed_password, email=email)
     elif role == 'job_seeker':
         user = JobSeeker(username=username, password=hashed_password, email=email)
     elif role == 'admin':

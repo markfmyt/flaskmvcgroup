@@ -11,3 +11,8 @@ class Job(db.Model):
 
     # Set in such a way that if a Job gets deleted, all the applications for that job gets deleted as well
     applications = db.relationship('Application', backref='job', lazy=True, cascade="all, delete-orphan")
+
+    def __init__(self, category, description, employer_id):
+        self.category = category
+        self.description = description
+        self.employer_id = employer_id
