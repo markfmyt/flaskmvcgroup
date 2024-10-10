@@ -1,193 +1,170 @@
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/uwidcit/flaskmvc)
-<a href="https://render.com/deploy?repo=https://github.com/uwidcit/flaskmvc">
-  <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
-</a>
+# BTW This read me outdated, i will update this last when we finish the applications
+# Job Application System
 
-![Tests](https://github.com/uwidcit/flaskmvc/actions/workflows/dev.yml/badge.svg)
+This is a Flask-based Job Application System that allows users to sign up, create job listings, apply for jobs, and manage applications. The system supports three types of users: Job Seekers, Employers, and Admins.
 
-# Flask MVC Template
-A template for flask applications structured in the Model View Controller pattern [Demo](https://dcit-flaskmvc.herokuapp.com/). [Postman Collection](https://documenter.getpostman.com/view/583570/2s83zcTnEJ)
+## Features
 
+- Job listing creation and management
+- Job application submission and review
+- User group based commands (Admin, Employer, Job Seeker)
 
-# Dependencies
-* Python3/pip3
-* Packages listed in requirements.txt
+## Installation
 
-# Installing Dependencies
-```bash
-$ pip install -r requirements.txt
-```
+1. Clone the repository:
+   ```
+   git clone https://github.com/markfmyt/Job-Board
+   ```
 
-# Configuration Management
+2. Install the required dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
 
+3. Initialize the database:
+   ```
+   flask init
+   ```
 
-Configuration information such as the database url/port, credentials, API keys etc are to be supplied to the application. However, it is bad practice to stage production information in publicly visible repositories.
-Instead, all config is provided by a config file or via [environment variables](https://linuxize.com/post/how-to-set-and-list-environment-variables-in-linux/).
+<details>
+<summary>Getting Started (Click to expand)</summary>
 
-## In Development
+Here's a step-by-step guide to get you started with the Job Application System:
 
-When running the project in a development environment (such as gitpod) the app is configured via default_config.py file in the App folder. By default, the config for development uses a sqlite database.
+1. Sign up a job seeker:
+   ```
+   flask user signup bob bobpass1 bob@mail.com job_seeker
+   ```
 
-default_config.py
-```python
-SQLALCHEMY_DATABASE_URI = "sqlite:///temp-database.db"
-SECRET_KEY = "secret key"
-JWT_ACCESS_TOKEN_EXPIRES = 7
-ENV = "DEVELOPMENT"
-```
+2. Sign up an employer:
+   ```
+   flask user signup amazon jungle12 amazon@mail.com employer
+   ```
 
-These values would be imported and added to the app in load_config() function in config.py
+3. Create a job listing (as employer):
+   ```
+   flask employer create_job "Software Engineer" "Looking for backend developers with React experience" 2
+   ```
+   Note: The number 2 at the end represents the employer's user ID.
 
-config.py
-```python
-# must be updated to inlude addtional secrets/ api keys & use a gitignored custom-config file instad
-def load_config():
-    config = {'ENV': os.environ.get('ENV', 'DEVELOPMENT')}
-    delta = 7
-    if config['ENV'] == "DEVELOPMENT":
-        from .default_config import JWT_ACCESS_TOKEN_EXPIRES, SQLALCHEMY_DATABASE_URI, SECRET_KEY
-        config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
-        config['SECRET_KEY'] = SECRET_KEY
-        delta = JWT_ACCESS_TOKEN_EXPIRES
-...
-```
+4. Apply for the job (as job seeker):
+   ```
+   flask job apply 1 1 "Hello, I have 10 years of React experience"
+   ```
+   Note: The first 1 is the job ID, and the second 1 is the job seeker's user ID.
 
-## In Production
+5. View applicants for the job (as employer):
+   ```
+   flask employer view_applicants 1
+   ```
+   Note: The 1 represents the job ID.
 
-When deploying your application to production/staging you must pass
-in configuration information via environment tab of your render project's dashboard.
+6. Review and accept the application (as employer):
+   ```
+   flask employer review 1 accept
+   ```
+   Note: The 1 represents the application ID.
 
-![perms](./images/fig1.png)
+7. View job application status for all applications for a particular job seeker:
+   ```
+   flask job status 1 1
+   ```
+   Note: The first 1 represents the job seeker's user ID and the second 1 represents the application id.
 
-# Flask Commands
+This walkthrough demonstrates the basic flow of the application, from user creation to job application and review.
 
-wsgi.py is a utility script for performing various tasks related to the project. You can use it to import and test any code in the project. 
-You just need create a manager command function, for example:
+</details>
 
-```python
-# inside wsgi.py
+## Usage
 
-user_cli = AppGroup('user', help='User object commands')
+The application provides a CLI interface for various operations. Here are the available commands:
 
-@user_cli.cli.command("create-user")
-@click.argument("username")
-@click.argument("password")
-def create_user_command(username, password):
-    create_user(username, password)
-    print(f'{username} created!')
+### User Commands
 
-app.cli.add_command(user_cli) # add the group to the cli
+- Signup a new user:
+  ```
+  flask user signup <username> <password> <email> <role>
+  ```
+  Role must be one of: 'admin', 'employer', or 'job_seeker'
 
-```
+- List all users:
+  ```
+  flask user list_all
+  ```
 
-Then execute the command invoking with flask cli with command name and the relevant parameters
+- List all job postings:
+  ```
+  flask user job_list
+  ```
 
-```bash
-$ flask user create bob bobpass
-```
+### Job Seeker Commands
 
+- View all job applications:
+  ```
+  flask job application_all <job_seeker_id>
+  ```
 
-# Running the Project
+- View a particular job application:
+  ```
+  flask job status <job_seeker_id> <application_id>
+  ```
 
-_For development run the serve command (what you execute):_
-```bash
-$ flask run
-```
+- Apply to a job:
+  ```
+  flask job apply <job_id> <job_seeker_id> <application_text>
+  ```
 
-_For production using gunicorn (what the production server executes):_
-```bash
-$ gunicorn wsgi:app
-```
+### Employer Commands
 
-# Deploying
-You can deploy your version of this app to render by clicking on the "Deploy to Render" link above.
+- Review a job application:
+  ```
+  flask employer review <application_id> <decision>
+  ```
+  Decision must be either 'accept' or 'reject'
 
-# Initializing the Database
-When connecting the project to a fresh empty database ensure the appropriate configuration is set then file then run the following command. This must also be executed once when running the app on heroku by opening the heroku console, executing bash and running the command in the dyno.
+- Create a new job listing:
+  ```
+  flask employer create_job <category> <description> <employer_id>
+  ```
 
-```bash
-$ flask init
-```
+- View applicants for a specific job:
+  ```
+  flask employer view_applicants <job_id>
+  ```
 
-# Database Migrations
-If changes to the models are made, the database must be'migrated' so that it can be synced with the new models.
-Then execute following commands using manage.py. More info [here](https://flask-migrate.readthedocs.io/en/latest/)
+### Admin Commands
 
-```bash
-$ flask db init
-$ flask db migrate
-$ flask db upgrade
-$ flask db --help
-```
+- Print all entities in the database:
+  ```
+  flask admin print_all
+  ```
 
-# Testing
+- Drop all tables in the database:
+  ```
+  flask admin drop_all <admin_id>
+  ```
+  
+- Removes a particular user from the database
+  ```
+  flask admin remove_user <user_id>
+  ```
 
-## Unit & Integration
-Unit and Integration tests are created in the App/test. You can then create commands to run them. Look at the unit test command in wsgi.py for example
+- Removes a particular job from the database
+  ```
+  flask admin remove_job <job_id>
+  ```
+  
+- Removes a particular application from the database
+  ```
+  flask admin remove_application <application_id>
+  ```
 
-```python
-@test.command("user", help="Run User tests")
-@click.argument("type", default="all")
-def user_tests_command(type):
-    if type == "unit":
-        sys.exit(pytest.main(["-k", "UserUnitTests"]))
-    elif type == "int":
-        sys.exit(pytest.main(["-k", "UserIntegrationTests"]))
-    else:
-        sys.exit(pytest.main(["-k", "User"]))
-```
+## Database Schema
 
-You can then execute all user tests as follows
+The application uses SQLAlchemy with the following main models:
+- User (base class for Admin, Employer, and JobSeeker)
+- Job
+- Application
 
-```bash
-$ flask test user
-```
-
-You can also supply "unit" or "int" at the end of the comand to execute only unit or integration tests.
-
-You can run all application tests with the following command
-
-```bash
-$ pytest
-```
-
-## Test Coverage
-
-You can generate a report on your test coverage via the following command
-
-```bash
-$ coverage report
-```
-
-You can also generate a detailed html report in a directory named htmlcov with the following comand
-
-```bash
-$ coverage html
-```
-
-# Troubleshooting
-
-## Views 404ing
-
-If your newly created views are returning 404 ensure that they are added to the list in main.py.
-
-```python
-from App.views import (
-    user_views,
-    index_views
-)
-
-# New views must be imported and added to this list
-views = [
-    user_views,
-    index_views
-]
-```
-
-## Cannot Update Workflow file
-
-If you are running into errors in gitpod when updateding your github actions file, ensure your [github permissions](https://gitpod.io/integrations) in gitpod has workflow enabled ![perms](./images/gitperms.png)
-
-## Database Issues
-
-If you are adding models you may need to migrate the database with the commands given in the previous database migration section. Alternateively you can delete you database file.
+## Credits
+This repository made use of a template from [FlaskMVC Template](https://github.com/uwidcit/flaskmvc).
