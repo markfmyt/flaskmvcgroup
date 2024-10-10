@@ -1,11 +1,7 @@
-from App.models import User
-from App.database import db
-
-# def create_user(username, password):
-#     newuser = User(username=username, password=password)
-#     db.session.add(newuser)
-#     db.session.commit()
-#     return newuser
+from App.models import db, User, Admin, Employer, JobSeeker, Job, Application
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask import jsonify
 
 def get_user_by_username(username):
     return User.query.filter_by(username=username).first()
@@ -20,7 +16,7 @@ def get_all_users(admin_id):
         return jsonify({"error": "Unauthorized: Only admins can view all users."}), 403
 
     users = User.query.all()
-    return jsonify(users), 200  # Return users with a 200 OK status code
+    return users  # Return users with a 200 OK status code
 
 def get_all_users_json():
     users = User.query.all()
@@ -34,6 +30,53 @@ def update_user(id, username):
     if user:
         user.username = username
         db.session.add(user)
-        return db.session.commit()
+        try:
+            db.session.commit()
+            return True  # Return True on successful commit
+        except Exception as e:
+            db.session.rollback()  # Rollback in case of error
+            return None  # Return None if there was an error
     return None
+
+def create_user(username, password, email, role):
+    hashed_password = generate_password_hash(password)
+    user = None
+
+    if role == 'employer':
+        user = Employer(username=username, password=hashed_password, email=email, company_name="DefaultCompany")
+    elif role == 'job_seeker':
+        user = JobSeeker(username=username, password=hashed_password, email=email)
+    elif role == 'admin':
+        user = Admin(username=username, password=hashed_password, email=email)
     
+    if user:
+        db.session.add(user)
+        try:
+            db.session.commit()  # Attempt to commit the session
+            return True  # Return True on successful commit
+        except Exception as e:
+            db.session.rollback()  # Rollback in case of error
+            return None  # Return None if there was an error
+    
+    return None
+
+def login_user(username, password):
+    user = User.query.filter_by(username=username).first()
+    
+    if user and check_password_hash(user.password, password):
+        access_token = create_access_token(identity=user.id)
+        return access_token
+    
+    return None
+
+def get_all_users():
+    users = User.query.all()
+    users_list = []
+    for user in users:
+        users_list.append({
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "role": user.__class__.__name__
+        })
+    return users_list
