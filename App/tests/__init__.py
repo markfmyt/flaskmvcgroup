@@ -1,1 +1,1 @@
-from .admin_test import *
+from .test_app import *
