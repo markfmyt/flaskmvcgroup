@@ -34,7 +34,7 @@ class TestEmployer:
         assert job_seeker_created is True
 
         # Apply to the job
-        application_created = apply_to_job(1, 1, "I am interested in this position.")
+        application_created = apply_to_job(1, 2, "I am interested in this position.")
         assert application_created is True
 
         # Get applicants for the job
