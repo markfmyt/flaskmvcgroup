@@ -38,8 +38,8 @@ def remove_job(job_id):
 def remove_application(application_id):
     application = Application.query.get(application_id)
     if application:  
-        db.session.delete(application)
         try:
+            db.session.delete(application)
             db.session.commit()  
             return True  
         except Exception as e:
