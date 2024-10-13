@@ -7,6 +7,7 @@ from App.controllers import (
     apply_to_job,
     view_job_status_all,
     view_job_status,
+    get_all_jobs,
 )
 
 @pytest.fixture(autouse=True, scope="module")
@@ -47,8 +48,7 @@ class TestJobSeeker:
         assert hasattr(application_status, 'is_accepted')
 
     def test_get_all_jobs(self):
-        # Test viewing all available jobs
-        from App.controllers import get_all_jobs
+            
         jobs = get_all_jobs()
         assert jobs is not None
         assert len(jobs) > 0

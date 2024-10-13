@@ -11,9 +11,6 @@ def get_all_entities():
         "jobs": jobs
     }
 
-def drop_database():
-    return db.drop_all()
-
 def remove_user(user_id):
     user = User.query.get(user_id)
     if user: 
@@ -28,9 +25,9 @@ def remove_user(user_id):
 
 def remove_job(job_id):
     job = Job.query.get(job_id)
-    if job: 
-        db.session.delete(job)
+    if job:
         try:
+            db.session.delete(job)
             db.session.commit() 
             return True  
         except Exception as e:
@@ -41,8 +38,8 @@ def remove_job(job_id):
 def remove_application(application_id):
     application = Application.query.get(application_id)
     if application:  
-        db.session.delete(application)
         try:
+            db.session.delete(application)
             db.session.commit()  
             return True  
         except Exception as e:

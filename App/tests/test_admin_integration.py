@@ -71,7 +71,7 @@ class TestAdmin:
     
         create_job(2, "Test Job", "This is a test job")
         db.session.commit()
-        apply_to_job(1, 3, "Test application")
+        apply_to_job(3, 3, "Test application")
     
         
         remove_result = remove_application(1)  # This is the first application
