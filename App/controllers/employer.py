@@ -3,6 +3,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 def create_job(employer_id,category, description):
+    employer = Employer.query.get(employer_id)
+    if not employer:
+        return None 
+    
     job = Job(employer_id = employer_id,category=category, description=description)
     db.session.add(job)
     try:
