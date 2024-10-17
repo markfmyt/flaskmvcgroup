@@ -1,0 +1,1576 @@
+{
+	"info": {
+		"_postman_id": "776978ed-faf1-4478-80a5-a0cff5632099",
+		"name": "SWEN 2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38824935",
+		"_collection_link": "https://curepe-quality-code.postman.co/workspace/Curepe-Quality-Code-Workspace~1ad58b86-b72b-4acd-88c0-a0bf01269769/collection/38824935-776978ed-faf1-4478-80a5-a0cff5632099?action=share&source=collection_link&creator=38824935"
+	},
+	"item": [
+		{
+			"name": "Employer",
+			"item": []
+		},
+		{
+			"name": "Admin",
+			"item": []
+		},
+		{
+			"name": "Job Seeker",
+			"item": []
+		},
+		{
+			"name": "(Employer) Sign Up",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Employer sign-up successful\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(201);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData.message).to.include(\"created successfully\");\r",
+							"    });\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{employerAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"davyn\",\r\n  \"password\": \"davynpass1\",\r\n  \"email\": \"davyn@mail.com\",\r\n  \"role\": \"employer\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/signup",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Job Seeker) Sign Up",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Job seeker sign-up successful\", function () {\r",
+							"    \r",
+							"    pm.expect(pm.response.code).to.equal(201);\r",
+							"\r",
+							"    \r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    \r",
+							"    pm.expect(jsonData.message).to.include(\"created successfully\");\r",
+							"\r",
+							"    });"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jobSeekerAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"alice\",\r\n  \"password\": \"alicepass1\",\r\n  \"email\": \"alice@mail.com\",\r\n  \"role\": \"job_seeker\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/signup",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Admin) Sign Up",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Admin sign-up successful\", function () {\r",
+							"   \r",
+							"    pm.expect(pm.response.code).to.equal(201);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"\r",
+							"    pm.expect(jsonData.message).to.include(\"created successfully\");\r",
+							"\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"elonmusk\",\r\n  \"password\": \"elonpass1\",\r\n  \"email\": \"elon@mail.com\",\r\n  \"role\": \"admin\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/signup",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Employer) Davyn Log In",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check for access token\", function () {\r",
+							"    pm.response.to.have.status(200); \r",
+							"    var jsonData = pm.response.json(); \r",
+							"    pm.expect(jsonData.access_token).to.exist; \r",
+							"    pm.collectionVariables.set(\"employerAccessToken\", jsonData.access_token); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\r\n  \"username\": \"john_doe\",\r\n  \"password\": \"securepassword\"\r\n}\r\n",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"davyn\",\r\n  \"password\": \"davynpass1\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Employer) Davyn Log In FAIL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check for 401 Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property('error');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\r\n  \"username\": \"john_doe\",\r\n  \"password\": \"securepassword\"\r\n}\r\n",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"davyn\",\r\n  \"password\": \"NOTdavynpass1\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Job Seeker) Alice Log In",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check for access token\", function () {\r",
+							"    pm.response.to.have.status(200); \r",
+							"    var jsonData = pm.response.json(); \r",
+							"    pm.expect(jsonData.access_token).to.exist; \r",
+							"    pm.collectionVariables.set(\"jobSeekerAccessToken\", jsonData.access_token); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"alice\",\r\n  \"password\": \"alicepass1\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Job Seeker) Alice Log In FAIL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check for 401 Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property('error');\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"alice\",\r\n  \"password\": \"NOTalicepass1\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Admin) Elon Log In",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check for access token\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = pm.response.json(); \r",
+							"    pm.expect(jsonData.access_token).to.exist; \r",
+							"    pm.collectionVariables.set(\"adminAccessToken\", jsonData.access_token); \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"elonmusk\",\r\n  \"password\": \"elonpass1\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Admin) Elon Log In FAIL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check for 401 Unauthorized\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property('error');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"elonmusk\",\r\n  \"password\": \"NOTelonpass1\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Employer) /api/employer/create_job",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Job creation successful\", function () {\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.equal(201);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData.message).to.equal(\"Job created successfully.\");\r",
+							"\r",
+							"    });"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{employerAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"category\": \"Software Engineering\",\r\n    \"description\": \"Looking for backend developers with >= 3 years experience\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/employer/create_job",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"employer",
+						"create_job"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Job Seeker) /api/jobs/apply",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Application submission successful\", function () {\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.equal(201);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"\r",
+							"    pm.expect(jsonData.message).to.equal(\"Application submitted successfully.\");\r",
+							"\r",
+							"\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\r\n  \"username\": \"john_doe\",\r\n  \"password\": \"securepassword\"\r\n}\r\n",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jobSeekerAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"job_id\": 1,\r\n  \"application_text\": \"Hi my name is john and i have lots of experience in backend\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/jobs/apply",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"jobs",
+						"apply"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Job Seeker) /api/jobs/applications",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"All applications retrieved successfully\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(200);  \r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"   \r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"\r",
+							"    jsonData.forEach(function(application) {\r",
+							"        // Validate each application object\r",
+							"        pm.expect(application).to.have.property(\"application_id\").that.is.a(\"number\");\r",
+							"        pm.expect(application).to.have.property(\"application_text\").that.is.a(\"string\");\r",
+							"        pm.expect(application).to.have.property(\"job_id\").that.is.a(\"number\");\r",
+							"        pm.expect(application).to.have.property(\"job_seeker_id\").that.is.a(\"number\");\r",
+							"        pm.expect(application).to.have.property(\"is_accepted\").that.is.oneOf([null, \"rejected\", \"accepted\"]);\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "payload",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jobSeekerAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/jobs/applications",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"jobs",
+						"applications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Employer) /api/employer/view_applicants/<int:job_id>",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check if applicants exist\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(200);  \r",
+							"    \r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"applicants\").that.is.an(\"array\");\r",
+							"    pm.expect(jsonData.applicants.length).to.be.above(0);\r",
+							"\r",
+							"    jsonData.applicants.forEach(function(applicant) {\r",
+							"        pm.expect(applicant).to.have.property(\"application_id\").that.is.a(\"number\");\r",
+							"        pm.expect(applicant).to.have.property(\"job_seeker_id\").that.is.a(\"number\");\r",
+							"    });\r",
+							"\r",
+							"    console.log(\"Applicants:\", jsonData.applicants);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check if applicant has a valid status\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    jsonData.applicants.forEach(function(applicant) {\r",
+							"        pm.expect(applicant).to.have.property(\"is_accepted\").that.is.oneOf([null, \"rejected\", \"accepted\"]);\r",
+							"    });\r",
+							"\r",
+							"    jsonData.applicants.forEach(function(applicant) {\r",
+							"        console.log(\"Application ID:\", applicant.application_id, \"Status:\", applicant.is_accepted);\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{employerAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/employer/view_applicants/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"employer",
+						"view_applicants",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Employer) /api/employer/review/<int:application_id>",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check if application is accepted or rejected\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(200); \r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\").that.is.a(\"string\");\r",
+							"    pm.expect(jsonData.message).to.match(/(accepted|rejected)/i);\r",
+							"    console.log(\"Message:\", jsonData.message);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{employerAccessToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"decision\": \"accept\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/employer/review/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"employer",
+						"review",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Job Seeker) /api/jobs/status/<int:application_id>",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Job details retrieved successfully\", function () {\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.equal(200);  \r",
+							"\r",
+							" \r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"application_id\").that.is.a(\"number\");\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"application_text\").that.is.a(\"string\");\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"job_id\").that.is.a(\"number\");\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"is_accepted\").that.is.oneOf([null, true, false]);\r",
+							"\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "payload",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jobSeekerAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/jobs/status/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"jobs",
+						"status",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(All Users) /api/jobs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check if jobs are present\", function () {\r",
+							"    \r",
+							"    pm.expect(pm.response.code).to.equal(200);  \r",
+							"\r",
+							"    \r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    // Check if jsonData is an array\r",
+							"    pm.expect(jsonData).to.be.an(\"array\").that.is.not.empty;\r",
+							"\r",
+							"    // Optionally, check if each job has the expected properties\r",
+							"    jsonData.forEach(function(job) {\r",
+							"        pm.expect(job).to.have.property(\"category\").that.is.a(\"string\");\r",
+							"        pm.expect(job).to.have.property(\"description\").that.is.a(\"string\");\r",
+							"        pm.expect(job).to.have.property(\"employer_id\").that.is.a(\"number\");\r",
+							"        pm.expect(job).to.have.property(\"id\").that.is.a(\"number\");\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/jobs",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Admin) /api/users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Users response is correct\", function () {\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"users\").that.is.an(\"array\").that.is.not.empty;\r",
+							"\r",
+							"    // Validate each user object in the users array\r",
+							"    jsonData.users.forEach(function(user) {\r",
+							"        pm.expect(user).to.have.property(\"id\").that.is.a(\"number\");\r",
+							"        pm.expect(user).to.have.property(\"username\").that.is.a(\"string\");\r",
+							"        pm.expect(user).to.have.property(\"email\").that.is.a(\"string\");\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/users",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Admin) Remove Application",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Application removal response is correct\", function () {\r",
+							"    // Check if the response status code is 200\r",
+							"    pm.expect(pm.response.code).to.equal(200);  // Adjust if a different status code is expected\r",
+							"\r",
+							"    // Parse the response body as JSON\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    // Check if the message is as expected\r",
+							"    pm.expect(jsonData).to.have.property(\"message\").that.is.a(\"string\");\r",
+							"    pm.expect(jsonData.message).to.equal(\"Application with id: 1 removed\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/admin/remove_application/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"remove_application",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Admin) Remove FAIL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Application removal failure response is correct\", function () {\r",
+							"  \r",
+							"    pm.expect(pm.response.code).to.not.equal(200);  \r",
+							" \r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"error\").that.is.a(\"string\");\r",
+							"    pm.expect(jsonData.error).to.equal(\"Application with id: 1 not removed\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/admin/remove_application/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"remove_application",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Admin) Remove Job",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Job removal response is correct\", function () {\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"message\").that.is.a(\"string\");\r",
+							"    pm.expect(jsonData.message).to.equal(\"Job with id: 1 removed\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/admin/remove_job/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"remove_job",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Admin) Remove Job FAIL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Job removal response is correct\", function () {\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"message\").that.is.a(\"string\");\r",
+							"    pm.expect(jsonData.message).to.equal(\"Job with id: 1 removed\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/admin/remove_job/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"remove_job",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Admin) Remove Non-Admin user Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User removal response is correct\", function () {\r",
+							"    // Check if the response status code is 200\r",
+							"    pm.expect(pm.response.code).to.equal(200);  // Adjust if a different status code is expected\r",
+							"\r",
+							"    // Parse the response body as JSON\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    // Check if the message is as expected\r",
+							"    pm.expect(jsonData).to.have.property(\"message\").that.is.a(\"string\");\r",
+							"    pm.expect(jsonData.message).to.equal(\"User with id: 1 removed\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/admin/remove_user/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"remove_user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(Admin) Remove User Fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User removal failure response is correct\", function () {\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.not.equal(200);  \r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData).to.have.property(\"error\").that.is.a(\"string\");\r",
+							"    pm.expect(jsonData.error).to.equal(\"User with id: 1 not removed\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{adminAccessToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/admin/remove_user/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"remove_user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "adminAccessToken",
+			"value": ""
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		},
+		{
+			"key": "employerAccessToken",
+			"value": ""
+		},
+		{
+			"key": "jobSeekerAccessToken",
+			"value": ""
+		}
+	]
+}
