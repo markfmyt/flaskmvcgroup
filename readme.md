@@ -52,31 +52,42 @@ This is a Flask-based Job Application System that provides a REST API for managi
 - `DELETE /api/admin/remove_application/<application_id>`: Remove an application (Admin only)
 - `GET /api/users`: List all users (Admin only)
 
-## Usage
+## Typical Usage
 
 To interact with the API, you can use tools like cURL, Postman, or any HTTP client library. Here are some example requests:
 
-1. User Signup:
+1. Employer Signup:
    ```
    POST /api/users/signup
    {
-     "username": "johndoe",
-     "password": "securepass",
-     "email": "john@example.com",
+     "username": "microsoft",
+     "password": "billgates1",
+     "email": "billgates@mail.com",
+     "role": "employer"
+   }
+   ```
+
+2. Job Seeker Signup:
+   ```
+   POST /api/users/signup
+   {
+     "username": "bob",
+     "password": "bobpass1",
+     "email": "bob@mail.com",
      "role": "job_seeker"
    }
    ```
 
-2. User Login:
+3. Employer Login:
    ```
    POST /api/users/login
    {
-     "username": "johndoe",
-     "password": "securepass"
+     "username": "microsoft",
+     "password": "billgates1"
    }
    ```
 
-3. Create a Job Listing (Employer):
+4. Create a Job Listing (Employer):
    ```
    POST /api/employer/create_job
    Authorization: Bearer <access_token>
@@ -86,7 +97,16 @@ To interact with the API, you can use tools like cURL, Postman, or any HTTP clie
    }
    ```
 
-4. Apply for a Job (Job Seeker):
+5. Job Seeker Login:
+   ```
+   POST /api/users/login
+   {
+     "username": "bob",
+     "password": "bobpass1"
+   }
+   ```
+
+6. Apply for a Job (Job Seeker):
    ```
    POST /api/jobs/apply
    Authorization: Bearer <access_token>
@@ -96,7 +116,7 @@ To interact with the API, you can use tools like cURL, Postman, or any HTTP clie
    }
    ```
 
-5. Review an Application (Employer):
+7. Review an Application (Employer):
    ```
    POST /api/employer/review/1
    Authorization: Bearer <access_token>
